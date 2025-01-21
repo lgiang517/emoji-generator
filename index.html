@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>AI表情包生成器</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #1a73e8;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            margin: 0;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #userInput {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        #userInput:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+        .emotion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .emotion-tag {
+            padding: 8px 15px;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .emotion-tag:hover {
+            background-color: #1a73e8;
+            color: white;
+        }
+        .main-button {
+            padding: 15px 30px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 150px;
+        }
+        .main-button:hover {
+            background-color: #1557b0;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .download-button {
+            background-color: #34a853;
+        }
+        .download-button:hover {
+            background-color: #2d8a46;
+        }
+        .download-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .response-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #response {
+            display: none;
+        }
+        #imageContainer {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+        }
+        #imageContainer img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        .loading {
+            display: none;
+            color: #666;
+            font-style: italic;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI表情包生成器</h1>
+            <p>输入关键词或选择情绪标签，让AI为你生成有趣的表情包！</p>
+        </div>
+        <div class="input-group">
+            <input type="text" id="userInput" placeholder="输入关键词或点击下方标签">
+        </div>
+        <div class="emotion-tags">
+            <button class="emotion-tag" onclick="selectEmotion('开心')">开心</button>
+            <button class="emotion-tag" onclick="selectEmotion('震惊')">震惊</button>
+            <button class="emotion-tag" onclick="selectEmotion('疑惑')">疑惑</button>
+            <button class="emotion-tag" onclick="selectEmotion('暴躁')">暴躁</button>
+            <button class="emotion-tag" onclick="selectEmotion('酸了')">酸了</button>
+            <button class="emotion-tag" onclick="selectEmotion('害怕')">害怕</button>
+            <button class="emotion-tag" onclick="selectEmotion('期待')">期待</button>
+            <button class="emotion-tag" onclick="selectEmotion('无语')">无语</button>
+            <button class="emotion-tag" onclick="selectEmotion('委屈')">委屈</button>
+            <button class="emotion-tag" onclick="selectEmotion('嘚瑟')">嘚瑟</button>
+            <button class="emotion-tag" onclick="selectEmotion('尴尬')">尴尬</button>
+            <button class="emotion-tag" onclick="selectEmotion('愤怒')">愤怒</button>
+        </div>
+        <div class="button-group">
+            <button class="main-button" onclick="sendMessage()">生成表情包</button>
+            <button class="main-button download-button" id="downloadBtn" onclick="downloadImage()" disabled>下载图片</button>
+        </div>
+        <div class="loading" id="loading">正在生成表情包，请稍候...</div>
+        <div id="response"></div>
+        <div id="imageContainer"></div>
+    </div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
