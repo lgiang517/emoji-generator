@@ -1,6 +1,21 @@
 // 当前图片URL
 let currentImageUrl = '';
 
+// 配置检查
+let apiConfig = {
+    API_KEY: '',
+    BOT_ID: ''
+};
+
+// 尝试加载配置
+try {
+    apiConfig = config || {};
+} catch (e) {
+    console.log('未找到配置文件，请设置API密钥');
+    // 显示配置提示
+    document.getElementById('status').innerHTML = '请在config.js中设置你的API密钥和机器人ID';
+}
+
 // 选择情绪标签
 function selectEmotion(emotion) {
     document.getElementById('userInput').value = emotion;
@@ -33,6 +48,11 @@ function downloadImage() {
 }
 
 async function sendMessage() {
+    if (!apiConfig.API_KEY || !apiConfig.BOT_ID) {
+        document.getElementById('status').innerHTML = '请先设置API密钥和机器人ID';
+        return;
+    }
+    
     const userInput = document.getElementById('userInput').value;
     const responseDiv = document.getElementById('response');
     const imageContainer = document.getElementById('imageContainer');
@@ -52,7 +72,7 @@ async function sendMessage() {
     currentImageUrl = '';
 
     const requestData = {
-        bot_id: config.BOT_ID,
+        bot_id: apiConfig.BOT_ID,
         user_id: "123456789",
         stream: true,
         auto_save_history: true,
@@ -69,7 +89,7 @@ async function sendMessage() {
         const response = await fetch('https://api.coze.cn/v3/chat', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${config.API_KEY}`,
+                'Authorization': `Bearer ${apiConfig.API_KEY}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(requestData)
